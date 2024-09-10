@@ -2,45 +2,37 @@
 <html lang="vi">
 
 <head>
-  <title>Tải dữ liệu</title>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tải dữ liệu Facebook</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    body {
+      width: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
     }
-    main{
-      min-width: 500px;
-      padding: 7px 21px;
+    h1 {
+      font-size: 18px;
+      margin-bottom: 15px;
     }
-    h1{
-      font-size: 21px;
-      font-weight: 600;
-      margin-bottom: 21px;
-    }
-    button{
-      padding: 7px 21px;
-      border: none;
-      font-size: 16px;
-      background-color: blue;
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1877f2;
       color: white;
+      border: none;
       border-radius: 5px;
       cursor: pointer;
+    }
+    button:hover {
+      background-color: #166fe5;
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <h1>Tải dữ liệu</h1>
-    <form id="form-download">
-      <button>
-        Xuất file
-      </button>
-    </form>
-  </main>
+  <h1>Tải dữ liệu Facebook</h1>
+  <button id="downloadBtn">Xuất và tải file</button>
   <script src="popup.js"></script>
 </body>
 

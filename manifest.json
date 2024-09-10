@@ -1,7 +1,7 @@
 {
-  "name": "Tự động tải file",
-  "version": "1.0",
-  "description": "Tự động tải file",
+  "name": "Tự động tải file Facebook",
+  "version": "1.1",
+  "description": "Tự động tải file dữ liệu từ Facebook Business",
   "manifest_version": 3,
   "icons": {
     "16": "images/logo.png",
@@ -11,20 +11,20 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["*://*.facebook.com/*", "*://*.business.facebook.com/*"],
       "js": ["content.js"]
     }
   ],
   "permissions": [
     "storage",
-    "alarms",
     "downloads",
     "activeTab",
     "scripting",
     "cookies"
   ],
   "host_permissions": [
-    "*://*.facebook.com/*"
+    "*://*.facebook.com/*",
+    "*://*.business.facebook.com/*"
   ],
   "action": {
     "default_popup": "popup.html"
