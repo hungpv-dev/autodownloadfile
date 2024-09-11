@@ -28,7 +28,7 @@ async function downloadFile() {
 
         let btnClass = '.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x1t137rt.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xo1l8bm.x140t73q.x19bke7z.x1y1aw1k.xwib8y2.x1swvt13.x1pi30zi';
         let btnCloseClass = '.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x1t137rt.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xo1l8bm.xbsr9hj.x1v911su.x1y1aw1k.xwib8y2.x1ye3gou.xn6708d';
-
+        let buttonDownloadTrueClass = '.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x1t137rt.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xo1l8bm.x140t73q.x19bke7z.x1y1aw1k.xwib8y2.x1swvt13.x1pi30zi';
 
         let btnCreateFile = getInp(btnClass);
         btnCreateFile.click();
@@ -37,24 +37,22 @@ async function downloadFile() {
         let btnDownloadClass = '.x1xqt7ti.x1fvot60.xk50ysn.xxio538.x1heor9g.xuxw1ft.x6ikm8r.x10wlt62.xlyipyv.x1h4wwuj.xeuugli';
         let btnDownload = document.querySelector(classModel + ' ' + btnDownloadClass);
         let btnClose = document.querySelector(classModel + ' ' + btnCloseClass);
-        console.log(btnDownload,btnClose);
+        let downloadInterval;
         if (btnDownload && !isDownloading) {
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach(async (mutation) => {
-                    if (mutation.attributeName === 'class' && !isDownloading) {
-                        console.log('toggle class');
-                        isDownloading = true;
-                        btnDownload.click();
-                        observer.disconnect();
-                        await delay(5000);
-                        isDownloading = false;
-                            chrome.runtime.sendMessage({action: "startHandle"}, function(response) {});
-                        btnClose.click();
-                    }
-                });
-            });
-
-            observer.observe(btnDownload, { attributes: true });
+            isDownloading = true;
+            downloadInterval = setInterval(async () => {
+                let btnDownloadTrue = document.querySelector(classModel + ' ' + buttonDownloadTrueClass);
+                if (btnDownloadTrue) {
+                    btnDownloadTrue.click();
+                    btnDownload.click();
+                    await delay(5000);
+                    isDownloading = false;
+                    chrome.runtime.sendMessage({action: "startHandle"});
+                    btnClose.click();
+                    clearInterval(downloadInterval); 
+                    return;
+                }
+            }, 1000);
         }
     }catch(e){
         location.reload();

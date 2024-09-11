@@ -90,7 +90,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 function handleStart() {
-    let giay = 1 * 60;
+    let giay = 20 * 60;
     chrome.storage.local.get(['time-download-file'], function (result) {
         const downloadList = result['time-download-file'] || {
             time: 0,
@@ -108,6 +108,10 @@ function handleStart() {
 }
 function startDownload() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        if (tabs.length === 0) {
+            console.error("Không tìm thấy tab nào đang hoạt động.");
+            return;
+        }
         chrome.tabs.sendMessage(tabs[0].id, {action: "checkReady"}, function(response) {
             if (chrome.runtime.lastError) {
                 console.error("Lỗi:", chrome.runtime.lastError.message);
