@@ -19,10 +19,15 @@ async function downloadFile() {
 
     await delay(2000);
 
-    await filterData();
+    let check = await filterData();
+    if(!check){
+        location.reload();
+        chrome.runtime.sendMessage({action: "startHandle"}, function(response) {});
+    };
 
     let btnClass = '.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x1t137rt.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xo1l8bm.x140t73q.x19bke7z.x1y1aw1k.xwib8y2.x1swvt13.x1pi30zi';
     let btnCloseClass = '.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x1t137rt.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xo1l8bm.xbsr9hj.x1v911su.x1y1aw1k.xwib8y2.x1ye3gou.xn6708d';
+
 
     let btnCreateFile = getInp(btnClass);
     btnCreateFile.click();
@@ -31,10 +36,12 @@ async function downloadFile() {
     let btnDownloadClass = '.x1xqt7ti.x1fvot60.xk50ysn.xxio538.x1heor9g.xuxw1ft.x6ikm8r.x10wlt62.xlyipyv.x1h4wwuj.xeuugli';
     let btnDownload = document.querySelector(classModel + ' ' + btnDownloadClass);
     let btnClose = document.querySelector(classModel + ' ' + btnCloseClass);
+    console.log(btnDownload,btnClose);
     if (btnDownload && !isDownloading) {
         const observer = new MutationObserver((mutations) => {
             mutations.forEach(async (mutation) => {
                 if (mutation.attributeName === 'class' && !isDownloading) {
+                    console.log('toggle class');
                     isDownloading = true;
                     btnDownload.click();
                     observer.disconnect();
@@ -49,18 +56,22 @@ async function downloadFile() {
         observer.observe(btnDownload, { attributes: true });
     }
 }
+
 async function filterData() {
     let listInp = getInp('.x78zum5.xdt5ytf.x1iyjqo2 .x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.x78zum5.xdl72j9.xdt5ytf.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt', true);
+    await delay(200);
 
     // Chọn trang
+    if(!listInp[0]) return false;
     listInp[0].click();
     await delay(1000);
     let listPage = document.querySelectorAll('.x1iyjqo2.x1iorvi4.x150jy0e.xjkvuk6.x1e558r4.x1t137rt.x78zum5.xdt5ytf.xu3tz18.x1oux0zi .x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.x78zum5.xdl72j9.xdt5ytf.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt');
+    await delay(200);
+    if(!listPage[0]) return false;
     listPage[0].click();
 
 
     await delay(200);
-
     // // Chế độ xem hàng ngày
     listInp[3].click();
 
@@ -71,9 +82,11 @@ async function filterData() {
 
     // Select khoảng ngày
     let selectKhoangNgay = getInp('.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x1q00v2l.xaatb59.x1qgsegg.xo1l8bm.xbsr9hj.x1djdxrh.x1y1aw1k.xwib8y2.x1ye3gou.xn6708d.xh8yej3');
+    await delay(200);
     selectKhoangNgay.click();
-    await delay(500);
+    await delay(200);
     let popUpFT = document.querySelector('.x9f619.xw2csxc.x1odjw0f.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x1kmqopl.xyamay9.x1l90r2v.x1swvt13.x1pi30zi');
+    if(!popUpFT) return false;
     let bayngay = popUpFT.querySelectorAll(".x6s0dn4.x78zum5.x1q0g3np.xozqiw3.x2lwn1j.xeuugli.x1iyjqo2.x19lwn94.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x1iorvi4.xjkvuk6.xurb0ha.x1sxyh0.xp7jhwk.x1n0m28w")[2];
     bayngay.click();
 
@@ -88,6 +101,7 @@ async function filterData() {
     }
     listInp[1].click();
     await delay(1000);
+    return true;
 }
 
 function delay(ms) {

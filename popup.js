@@ -4,8 +4,7 @@ form.addEventListener('submit', function (e) {
     handleStart();
 });
 function handleStart(){
-    // let giay = 1 * 60;
-    let giay = 5;
+    let giay = 1 * 5;
     chrome.storage.local.get(['time-download-file'], function (result) {
         const downloadList = result['time-download-file'] || {
             time: 0,
@@ -23,14 +22,6 @@ function handleStart(){
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === "updateTable") {
         updateTable();
-        if(request.data.time == 0 && request.data.status == 0){
-            downloadList = {};
-            downloadList.time = 0;
-            downloadList.stop = false;
-            downloadList.status = 1;
-            chrome.storage.local.set({ 'time-download-file': downloadList }, function () {});
-            startDownload();
-        }
         sendResponse({status: "success"});
         return true;
     }else if(request.action === "startHandle"){
@@ -40,21 +31,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-function startDownload(){
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {action: "checkReady"}, function(response) {
-            if (chrome.runtime.lastError) {
-                console.error("Lỗi:", chrome.runtime.lastError.message);
-            } else if (response && response.ready) {
-                chrome.tabs.sendMessage(tabs[0].id, {action: "startDownload"}, function(response) {
-                    if (response && response.status === "started") {
-                        console.log("Quá trình tải xuống đã bắt đầu");
-                    }   
-                });
-            }
-        });
-    });
-}
+
 
 function updateTable() {
     chrome.storage.local.get(['time-download-file'], function (result) {

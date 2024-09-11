@@ -90,7 +90,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 function handleStart() {
-    let giay = 5;
+    let giay = 1 * 60;
     chrome.storage.local.get(['time-download-file'], function (result) {
         const downloadList = result['time-download-file'] || {
             time: 0,
