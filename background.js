@@ -1,3 +1,13 @@
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.set({
+        'time-download-file': {
+            time: 0,
+            stop: true,
+            status: 1
+        }
+    }, function () { });
+    chrome.alarms.create('loadingFile', { periodInMinutes: 1 / 60 });
+});
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "processData") {
         chrome.downloads.search({
@@ -7,7 +17,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (results && results.length > 0) {
                 const latestDownload = results[0];
                 uploadFile(latestDownload.filename);
-            } 
+            }
         });
     }
 });
@@ -48,16 +58,16 @@ let isUploading = false;
 async function uploadToServer(fileContent, fileName) {
     if (isUploading) return;
     isUploading = true;
-    
+
     try {
         const formData = new FormData();
-        formData.append('file', new Blob([fileContent], {type: 'application/octet-stream'}), fileName);
-        
+        formData.append('file', new Blob([fileContent], { type: 'application/octet-stream' }), fileName);
+
         const response = await fetch('https://admin.rovegl.com/admin/import-media-data-test', {
             method: 'POST',
             body: formData
         });
-        
+
         const responseText = await response.text();
         try {
             const data = JSON.parse(responseText);
@@ -70,4 +80,34 @@ async function uploadToServer(fileContent, fileName) {
     } finally {
         isUploading = false;
     }
+}
+
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === 'loadingFile') {
+        loadingFile();
+    }
+});
+
+
+function loadingFile() {
+    chrome.storage.local.get(['time-download-file'], function (result) {
+        let downloadTime = result['time-download-file'] || {
+            time: 0,
+            stop: true,
+            status: 1
+        };
+        if (downloadTime.time > 0) {
+            downloadTime.time -= 1;
+        } else {
+            downloadTime.time = 0;
+        }
+        chrome.storage.local.set({ 'time-download-file': downloadTime }, function () {
+            chrome.runtime.sendMessage({ action: "updateTable", data: downloadTime }, function (response) {
+                if (chrome.runtime.lastError) {
+                    // console.log("Lỗi khi gửi tin nhắn:", chrome.runtime.lastError.message);
+                }
+            });
+        });
+    });
 }

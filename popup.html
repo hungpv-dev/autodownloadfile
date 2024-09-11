@@ -15,30 +15,75 @@
       min-width: 500px;
       padding: 7px 21px;
     }
-    h1{
-      font-size: 21px;
-      font-weight: 600;
-      margin-bottom: 21px;
+    h2{
+      margin-bottom: 10px;
     }
     button{
       padding: 7px 21px;
-      border: none;
+      border: 1px solid #333;
       font-size: 16px;
-      background-color: blue;
-      color: white;
-      border-radius: 5px;
+      background-color: white;
+      box-shadow: 5px 5px rgba(0, 0, 0, 0.4);
       cursor: pointer;
+      transition: all 0.1s ease;
+    }
+    button:active{
+      box-shadow: none;
+      transform: translate(5px, 5px);
+    }
+    .form-select{
+      margin-bottom: 15px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .form-select p{
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .form-select select{
+      width: 100%;
+      border-radius: 5px;
+      padding: 4px 7px;
+      font-size: 16px;
     }
   </style>
 </head>
 
 <body>
   <main>
-    <h1>Tải dữ liệu</h1>
     <form id="form-download">
-      <button>
-        Xuất file
-      </button>
+      <h2>Xuất dữ liệu</h2>
+      <div class='form-select'>
+        <div>
+          <p for="chedoxem">Chế độ xem dữ liệu</p>
+          <select id="chedoxem">
+            <option value="trondoi">Trọn đời</option>
+            <option value="hangngay">Hàng ngày</option>
+          </select>
+        </div>
+        <div>
+          <p for="capdo">Cấp độ nội dung</p>
+          <select id="capdo">
+            <option value="video">Video</option>
+            <option value="baiviet">Bài viết</option>
+            <option value="trang">Trang</option>
+          </select>
+        </div>
+        <div>
+          <p for="boloc">Bộ lọc</p>
+          <select id="boloc">
+            <option value="ngaytao">Ngày tạo</option>
+            <option value="hoatdong">Hoạt động</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button>
+          Bắt đầu đồng bộ dữ liệu
+        </button> 
+        <div class="time" id="time" style="font-size: 16px; font-weight: 500;"></div>
+      </div>
     </form>
   </main>
   <script src="popup.js"></script>
