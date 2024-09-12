@@ -4,7 +4,7 @@ form.addEventListener('submit', function (e) {
     handleStart();
 });
 function handleStart(){
-    let giay = 1 * 60;
+    let giay = 10 * 60;
     chrome.storage.local.get(['time-download-file'], function (result) {
         const downloadList = result['time-download-file'] || {
             time: 0,

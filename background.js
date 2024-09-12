@@ -90,7 +90,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 function handleStart() {
-    let giay = 20 * 60;
+    let giay = 10 * 60;
     chrome.storage.local.get(['time-download-file'], function (result) {
         const downloadList = result['time-download-file'] || {
             time: 0,
@@ -102,7 +102,7 @@ function handleStart() {
         downloadList.status = 0;
         chrome.storage.local.set({ 'time-download-file': downloadList }, function () {
             // Gọi hàm startDownload ngay sau khi cập nhật storage
-            startDownload();
+            // startDownload();
         });
     });
 }
@@ -136,6 +136,7 @@ function loadingFile() {
             downloadTime.time -= 1;
         } else {
             downloadTime.time = 0;
+            downloadTime.stop = true;
         }
         chrome.storage.local.set({ 'time-download-file': downloadTime }, function () {
             chrome.runtime.sendMessage({ action: "updateTable", data: downloadTime }, function (response) {

@@ -42,12 +42,11 @@ async function downloadFile() {
             isDownloading = true;
             downloadInterval = setInterval(async () => {
                 let btnDownloadTrue = document.querySelector(classModel + ' ' + buttonDownloadTrueClass);
-                if (btnDownloadTrue) {
+                if (btnDownloadTrue && isDownloading) {
                     btnDownloadTrue.click();
-                    btnDownload.click();
-                    await delay(5000);
                     isDownloading = false;
                     chrome.runtime.sendMessage({action: "startHandle"});
+                    await delay(5000);
                     btnClose.click();
                     clearInterval(downloadInterval); 
                     return;
