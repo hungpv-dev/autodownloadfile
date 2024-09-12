@@ -106,17 +106,19 @@ function handleStart() {
         });
     });
 }
-function startDownload() {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+async function startDownload() {
+    chrome.tabs.query({active: true, currentWindow: true}, async function(tabs) {
         if (tabs.length === 0) {
-            console.error("Không tìm thấy tab nào đang hoạt động.");
+            await delay(1000);
+            startDownload();
             return;
         }
-        chrome.tabs.sendMessage(tabs[0].id, {action: "checkReady"}, function(response) {
+        chrome.tabs.sendMessage(tabs[0].id, {action: "checkReady"}, async function(response) {
             if (chrome.runtime.lastError) {
-                console.error("Lỗi:", chrome.runtime.lastError.message);
+                await delay(1000);
+                startDownload();
             } else if (response && response.ready) {
-                chrome.tabs.sendMessage(tabs[0].id, {action: "startDownload"}, function(response) {
+                chrome.tabs.sendMessage(tabs[0].id, {action: "startDownload"}, async function(response) {
                     if (response && response.status === "started") {
                         console.log("Quá trình tải xuống đã bắt đầu");
                     }   

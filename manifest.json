@@ -20,6 +20,7 @@
     "alarms",
     "downloads",
     "activeTab",
+    "tabs",
     "scripting",
     "cookies"
   ],
