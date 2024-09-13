@@ -3,7 +3,8 @@ chrome.runtime.onInstalled.addListener(() => {
         'time-download-file': {
             time: 0,
             stop: true,
-            status: 1
+            status: 1,
+            loading: false
         }
     }, function () { });
     chrome.alarms.create('loadingFile', { periodInMinutes: 1 / 60 });
@@ -61,6 +62,14 @@ async function uploadToServer(fileContent, fileName) {
             body: formData
         });
         const responseText = await response.text();
+        // Xóa file khỏi lịch sử tải xuống của Chrome
+        chrome.downloads.search({filename: fileName}, function(items) {
+            if (items.length > 0) {
+                console.log(items[0]);
+                chrome.downloads.removeFile(items[0].id);
+                chrome.downloads.erase({id: items[0].id});
+            }
+        });
         try {
             const data = JSON.parse(responseText);
             console.log(data);
@@ -98,6 +107,7 @@ function handleStart() {
         };
         downloadList.time = giay;
         downloadList.stop = false;
+        downloadList.loading = true;
         downloadList.status = 0;
         chrome.storage.local.set({ 'time-download-file': downloadList }, function () {
             // Gọi hàm startDownload ngay sau khi cập nhật storage
