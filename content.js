@@ -57,6 +57,14 @@ async function downloadFile() {
                     clearInterval(downloadInterval); 
                     return;
                 }
+                if (window.location.href.startsWith('https://business.facebook.com/')) {
+                    if(!document.querySelector(classModel + ' ' + btnDownloadClass)){
+                        isDownloading = false;
+                        chrome.runtime.sendMessage({action: "startHandle"});
+                        clearInterval(downloadInterval); 
+                        return;
+                    }
+                }
             }, 1000);
         }
     }catch(e){
