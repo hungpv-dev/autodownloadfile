@@ -7,29 +7,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     return true;
 });
-document.querySelector("#mediaManagerExportInsightsButton > div.x3oybdh.xuxw1ft.x1iknuni.xw9jwym.x1e2iszw.xg0tal0.x3nfvp2.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x193iq5w.xeuugli > div.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x1q00v2l.xaatb59.x1qgsegg.xo1l8bm.xbsr9hj.x1djdxrh.x1y1aw1k.xwib8y2.x1pi30zi.x1ye3gou")
+
 async function openModal() {
-    let btnOpenPopup = document.querySelectorAll("#mediaManagerExportInsightsButton .x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r");
-    await delay(200);
-    btnOpenPopup.forEach(element => {
-        let text = element.querySelector('.x1xqt7ti.x1fvot60.xk50ysn.xxio538.x1heor9g.xuxw1ft.x6ikm8r.x10wlt62.xlyipyv.x1h4wwuj.xeuugli');
-        if(text){
-            element.click();
-            downloadFile();
-        }
-    });
+    try {
+        let btnOpenPopup = document.querySelectorAll("#mediaManagerExportInsightsButton .x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r");
+        await delay(200);
+        btnOpenPopup.forEach(element => {
+            let text = element.querySelector('.x1xqt7ti.x1fvot60.xk50ysn.xxio538.x1heor9g.xuxw1ft.x6ikm8r.x10wlt62.xlyipyv.x1h4wwuj.xeuugli');
+            if (text) {
+                element.click();
+                downloadFile();
+            }
+        });
+    } catch (error) {
+        location.reload();
+        chrome.runtime.sendMessage({ action: "startHandle" }, function (response) { });
+    }
 }
+
 
 let isDownloading = false;
 async function downloadFile() {
 
-    try{
-        await delay(2000);
+    try {
+        await delay(3000);
 
         let check = await filterData();
-        if(!check){
+        if (!check) {
             location.reload();
-            chrome.runtime.sendMessage({action: "startHandle"}, function(response) {});
+            chrome.runtime.sendMessage({ action: "startHandle" }, function (response) { });
         };
 
         let btnClass = '.x1i10hfl.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.x16tdsg8.xggy1nq.x1ja2u2z.x1t137rt.x6s0dn4.x1ejq31n.xd10rxx.x1sy0etr.x17r0tee.x3nfvp2.xdl72j9.x1q0g3np.x2lah0s.x193iq5w.x1n2onr6.x1hl2dhg.x87ps6o.xxymvpz.xlh3980.xvmahel.x1lku1pv.x1g40iwv.x1g2r6go.x16e9yqp.x12w9bfk.x15406qy.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.xo1l8bm.x140t73q.x19bke7z.x1y1aw1k.xwib8y2.x1swvt13.x1pi30zi';
@@ -43,33 +49,50 @@ async function downloadFile() {
         let btnDownloadClass = '.x1xqt7ti.x1fvot60.xk50ysn.xxio538.x1heor9g.xuxw1ft.x6ikm8r.x10wlt62.xlyipyv.x1h4wwuj.xeuugli';
         let btnDownload = document.querySelector(classModel + ' ' + btnDownloadClass);
         let btnClose = document.querySelector(classModel + ' ' + btnCloseClass);
+        await delay(500);
         let downloadInterval;
         if (btnDownload && !isDownloading) {
+            console.log('true download');
             isDownloading = true;
+
+            // Khởi tạo MutationObserver để theo dõi thay đổi thuộc tính
+            let observer = new MutationObserver((mutationsList, observer) => {
+                for (let mutation of mutationsList) {
+                    if (mutation.type === 'attributes') {
+                        console.log('ok');
+                    }
+                }
+            });
+            // Thiết lập cấu hình để theo dõi thay đổi thuộc tính
+            let config = { attributes: true };
+            // Bắt đầu quan sát btnDownload
+            observer.observe(btnDownload, config);
+
             downloadInterval = setInterval(async () => {
                 let btnDownloadTrue = document.querySelector(classModel + ' ' + buttonDownloadTrueClass);
                 if (btnDownloadTrue && isDownloading) {
+                    console.log('send action');
                     btnDownloadTrue.click();
                     isDownloading = false;
-                    chrome.runtime.sendMessage({action: "startHandle"});
+                    setTimeDownload();
                     await delay(5000);
                     btnClose.click();
-                    clearInterval(downloadInterval); 
+                    clearInterval(downloadInterval);
                     return;
                 }
                 if (window.location.href.startsWith('https://business.facebook.com/')) {
-                    if(!document.querySelector(classModel + ' ' + btnDownloadClass)){
+                    if (!document.querySelector(classModel + ' ' + btnDownloadClass)) {
                         isDownloading = false;
-                        chrome.runtime.sendMessage({action: "startHandle"});
-                        clearInterval(downloadInterval); 
+                        setTimeDownload();
+                        clearInterval(downloadInterval);
                         return;
                     }
                 }
             }, 1000);
         }
-    }catch(e){
+    } catch (e) {
         location.reload();
-        chrome.runtime.sendMessage({action: "startHandle"}, function(response) {});
+        setTimeDownload();
     }
 }
 
@@ -78,14 +101,17 @@ async function filterData() {
     await delay(200);
 
     // Chọn trang
-    // if(!listInp[0]) return false;
-    // listInp[0].click();
-    // await delay(1000);
-    // let listPage = document.querySelectorAll('.x1iyjqo2.x1iorvi4.x150jy0e.xjkvuk6.x1e558r4.x1t137rt.x78zum5.xdt5ytf.xu3tz18.x1oux0zi .x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.x78zum5.xdl72j9.xdt5ytf.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt');
-    // await delay(200);
-    // if(!listPage[0]) return false;
-    // listPage[0].click();
-
+    if(!listInp[0]) return false;
+    listInp[0].click();
+    await delay(1000);
+    let listPage = document.querySelectorAll('.x1iyjqo2.x1iorvi4.x150jy0e.xjkvuk6.x1e558r4.x1t137rt.x78zum5.xdt5ytf.xu3tz18.x1oux0zi .x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk.x78zum5.xdl72j9.xdt5ytf.x2lah0s.xe8uvvx.xdj266r.x11i5rnm.xat24cr.x1mh8g0r.x2lwn1j.xeuugli.xexx8yu.x4uap5.x18d9i69.xkhd6sd.x1n2onr6.x16tdsg8.x1hl2dhg.xggy1nq.x1ja2u2z.x1t137rt');
+    await delay(200);
+    for (let i = 0; i < listPage.length; i++) {
+        if (listPage[i].getAttribute('aria-selected') === "false") {
+            listPage[i].click();
+        };
+        await delay(200);
+    }
 
     await delay(200);
     // // Chế độ xem hàng ngày
@@ -102,17 +128,17 @@ async function filterData() {
     selectKhoangNgay.click();
     await delay(200);
     let popUpFT = document.querySelector('.x9f619.xw2csxc.x1odjw0f.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x1kmqopl.xyamay9.x1l90r2v.x1swvt13.x1pi30zi');
-    if(!popUpFT) return false;
+    if (!popUpFT) return false;
     let bayngay = popUpFT.querySelectorAll(".x6s0dn4.x78zum5.x1q0g3np.xozqiw3.x2lwn1j.xeuugli.x1iyjqo2.x19lwn94.x1lcm9me.x1yr5g0i.xrt01vj.x10y3i5r.x1iorvi4.xjkvuk6.xurb0ha.x1sxyh0.xp7jhwk.x1n0m28w")[2];
     bayngay.click();
 
     listInp[1].click();
     await delay(500);
-    
+
     // Số liệu đặt sẵn
     let listSolieu = document.querySelectorAll('.x1iyjqo2.x1iorvi4.x150jy0e.xjkvuk6.x1e558r4.x1t137rt.x6ikm8r.x1odjw0f.x1k0if8d.xdm93yi .x1i10hfl.x1qjc9v5.xjbqb8w.xjqpnuy.xa49m3k.xqeqjp1.x2hbi6w.x13fuv20.xu3j5b3.x1q0q8m5.x26u7qi.x972fbf.xcfux6l.x1qhh985.xm0m39n.x9f619.x1ypdohk');
     for (let i = 0; i < listSolieu.length; i++) {
-        if(listSolieu[i].getAttribute('aria-selected') === "false"){
+        if (listSolieu[i].getAttribute('aria-selected') === "false") {
             listSolieu[i].click();
         };
         await delay(200);
@@ -132,4 +158,14 @@ function getInp(classInp, all = false) {
         return document.querySelectorAll(classPopup + ' ' + classInp);
     }
     return document.querySelector(classPopup + ' ' + classInp);
+}
+
+function setTimeDownload() {
+    let time = 10 * 60;
+    const downloadList = {
+        time: time,
+        stop: false,
+        status: 0
+    };
+    chrome.storage.local.set({ 'time-download-file': downloadList }, function () { });
 }

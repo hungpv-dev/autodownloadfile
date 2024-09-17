@@ -39,6 +39,7 @@ async function uploadFile(filename) {
         const fileContent = await readFileAsArrayBuffer(filename);
         await uploadToServer(fileContent, filename.split('\\').pop().split('/').pop());
     } catch (error) {
+        handleStart();
         console.error('Lỗi khi đọc hoặc tải lên file:', error);
     }
 }
@@ -78,6 +79,7 @@ async function uploadToServer(fileContent, fileName) {
         }
     } catch (error) {
         console.error('Lỗi khi tải lên:', error);
+        handleStart();
     } finally {
         isUploading = false;
     }
